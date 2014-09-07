@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{26e3e4e6-9f6d-4186-ab23-d16682c8bd28}</UniqueIdentifier>
+      <Extensions>.cpp;.cxx;.c</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{29873833-7a66-4a79-862e-dffdb3851394}</UniqueIdentifier>
+      <Extensions>.h;.hpp</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{43fb709d-5e8b-405b-9a14-802892f06f96}</UniqueIdentifier>
+      <Extensions>.rc;.rc2;.ico;.gif;.bmp;</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="indirectCalls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="indirectCalls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
