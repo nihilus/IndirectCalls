@@ -20,6 +20,7 @@ typedef indirectCallObj indirect_t;
 typedef qvector<ulong> bphitlist_t;
 
 long vtEstimateSize(ea_t);
+
 void idaapi vtDescription(void*, ulong, char*const *);
 void idaapi vtEnter(void*, ulong);
 void idaapi vtDestroy(void*);
@@ -33,6 +34,7 @@ void idaapi ccDescription(void*, ulong, char*const *);
 void idaapi ccEnter(void*, ulong);
 void idaapi ccDestroy(void*);
 ulong idaapi ccSize(void*);
+
 void createCompletedBpWindow(netnode*, bphitlist_t*);
 void requestSetBps(netnode*);
 void setBps(netnode*);

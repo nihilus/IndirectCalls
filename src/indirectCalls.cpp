@@ -66,7 +66,7 @@
 #include <idp.hpp>
 #include <dbg.hpp>
 #include <loader.hpp>
-#include <allins.hpp>
+//#include <allins.hpp>
 #include <intel.hpp>
 #include "indirectCalls.h"
 
@@ -278,7 +278,7 @@ void idaapi icDescription(void* obj, ulong n, char*const * arrptr)
     node->supval(n, &curr_indirect, sizeof(curr_indirect));
     func_t* currFunc = get_func(curr_indirect.caller);
 
-    ua_ana0(curr_indirect.caller);
+    decode_insn(curr_indirect.caller);
 
     get_nice_colored_name(curr_indirect.caller, arrptr[0], MAXSTR, CNAMEOPT); // address
 
@@ -413,7 +413,7 @@ void idaapi ccDescription(void* obj, ulong n, char*const * arrptr)
 
     cbp->calls->supval(index, &curr_indirect, sizeof(curr_indirect));
     func_t* currFunc = get_func(curr_indirect.caller);
-    ua_ana0(curr_indirect.caller); //
+    decode_insn(curr_indirect.caller); //
 
     // seg.addr
     get_nice_colored_name(curr_indirect.caller, arrptr[0], MAXSTR, CNAMEOPT);
@@ -980,7 +980,7 @@ void findIndirectCalls(segment_t* seg, netnode* node)
 
         if (isHead(flags) && isCode(flags))
         {
-            if (ua_ana0(addr) != 0)
+            if (decode_insn(addr) != 0)
             {
                 switch (cmd.itype)
                 {
