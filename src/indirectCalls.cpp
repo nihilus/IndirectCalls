@@ -161,7 +161,7 @@ void idaapi vtDescription(void* obj, ulong n, char*const * arrptr)
     if (!getobjcount(node))
         return;
 
-    char buffer[MAXSTR];
+    qstring buffer;
     node->supval(n, &curr_vtable, sizeof(curr_vtable));
     vtSize = vtEstimateSize(curr_vtable.baseaddr);
     target = get_long(curr_vtable.largestOffset + curr_vtable.baseaddr);
@@ -170,7 +170,7 @@ void idaapi vtDescription(void* obj, ulong n, char*const * arrptr)
     qsnprintf(arrptr[1], MAXSTR, "%04a", curr_vtable.largestOffset);
     get_nice_colored_name(target, arrptr[2], MAXSTR, CNAMEOPT);
 
-    get_short_name(BADADDR, target, buffer, MAXSTR); //demangles fname
+    buffer = get_short_name(target); //demangles fname
     qsnprintf(arrptr[3], MAXSTR, "%s", buffer);
     qsnprintf(arrptr[4], MAXSTR, "%04a", vtSize);
     qsnprintf(arrptr[5], MAXSTR, "%04a", vtSize / 4);
@@ -273,7 +273,7 @@ void idaapi icDescription(void* obj, ulong n, char*const * arrptr)
     if (!getobjcount(node))
         return;
 
-    char buffer[MAXSTR];
+    qstring buffer;
 
     node->supval(n, &curr_indirect, sizeof(curr_indirect));
     func_t* currFunc = get_func(curr_indirect.caller);
@@ -287,12 +287,13 @@ void idaapi icDescription(void* obj, ulong n, char*const * arrptr)
     else
         qstrncpy(arrptr[1], "-", MAXSTR);
 
-    get_short_name(BADADDR, currFunc->startEA, buffer, MAXSTR);
+    buffer = get_short_name(currFunc->startEA);
     qsnprintf(arrptr[2], MAXSTR, "%s", buffer);
 
-    generate_disasm_line(cmd.ea, buffer, sizeof(buffer));
-    tag_remove(buffer, buffer, sizeof(buffer));
-    qsnprintf(arrptr[3], MAXSTR, "%s", buffer);
+	char *buffer2 = (char *)buffer.c_str();
+	generate_disasm_line(cmd.ea, buffer2, sizeof(buffer2));
+    tag_remove(buffer2, buffer2, sizeof(buffer2));
+    qsnprintf(arrptr[3], MAXSTR, "%s", buffer2);
 
     return;
 }
@@ -409,7 +410,7 @@ void idaapi ccDescription(void* obj, ulong n, char*const * arrptr)
     if (!tmp.size()) // only needed if choose2 kill callback used
         return;      // since it removes members
 
-    char buffer[MAXSTR];
+    qstring buffer;
 
     cbp->calls->supval(index, &curr_indirect, sizeof(curr_indirect));
     func_t* currFunc = get_func(curr_indirect.caller);
@@ -418,7 +419,7 @@ void idaapi ccDescription(void* obj, ulong n, char*const * arrptr)
     // seg.addr
     get_nice_colored_name(curr_indirect.caller, arrptr[0], MAXSTR, CNAMEOPT);
 
-    get_short_name(BADADDR, currFunc->startEA, buffer, MAXSTR);
+    buffer = get_short_name(currFunc->startEA);
     qsnprintf(arrptr[1], MAXSTR, "%s", buffer);
 
     if (curr_indirect.flags & XRSETFLAG)
@@ -426,10 +427,11 @@ void idaapi ccDescription(void* obj, ulong n, char*const * arrptr)
     else
         qstrncpy(arrptr[2], "-", MAXSTR);
 
+	char *buffer2 = (char *)buffer.c_str();
     // get instruction disasm, remove color info
-    generate_disasm_line(cmd.ea, buffer, sizeof(buffer));
-    tag_remove(buffer, buffer, sizeof(buffer));
-    qsnprintf(arrptr[3], MAXSTR, "%s", buffer);
+    generate_disasm_line(cmd.ea, buffer2, sizeof(buffer2));
+    tag_remove(buffer2, buffer2, sizeof(buffer2));
+    qsnprintf(arrptr[3], MAXSTR, "%s", buffer2);
 
     if (curr_indirect.flags & XSEGFLAG)
         qstrncpy(arrptr[4], "x", MAXSTR); // cross segment reference
@@ -440,7 +442,7 @@ void idaapi ccDescription(void* obj, ulong n, char*const * arrptr)
 
     currFunc = get_func(curr_indirect.target);
     //demangles fname
-    get_short_name(BADADDR, currFunc->startEA, buffer, MAXSTR);
+    buffer = get_short_name(currFunc->startEA);
     qsnprintf(arrptr[6], MAXSTR, "%s", buffer);
 
     return;
